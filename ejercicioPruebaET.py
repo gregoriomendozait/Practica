@@ -16,7 +16,6 @@ bodega = {
     'FLO6': [22990, 6],
 }
 
-
 def mostrar_menu():
     print("========== MENÚ PRINCIPAL ==========")
     print("1. Unidades por tipo de arreglo")
@@ -83,7 +82,6 @@ def busqueda_precio(pmin, pmax, pBodegas, pArreglos):
         for elemento in resultados:
             print(elemento)
 
-
 def validar_codigo(pCodigo, pArreglos, pBodegas):
     
     pCodigo = pCodigo.strip().upper()
@@ -92,7 +90,6 @@ def validar_codigo(pCodigo, pArreglos, pBodegas):
     if pCodigo in pArreglos or pCodigo in pBodegas:
         return False
     return True
-    
 
 def validar_nombre(pNombre):
     
@@ -155,6 +152,7 @@ def agregar_arreglo(pCodigo, pNombre, pTipo, pColor, pTamano, pTarjeta, pTempora
     pCodigo = pCodigo.strip().upper()
     if pCodigo in pArreglos:
         return False
+    
     pArreglos[pCodigo] = [
         pNombre.strip(),
         pTipo.strip(),
@@ -163,7 +161,7 @@ def agregar_arreglo(pCodigo, pNombre, pTipo, pColor, pTamano, pTarjeta, pTempora
         pTarjeta,
         pTemporada.strip()
     ]
-    pBodegas[pCodigo] = [int(pPrecio), int(pUnidades)]
+    pBodegas[pCodigo] = [pPrecio, pUnidades]
     return True
 
 def eliminar_arreglo(pCodigo, pArreglos, pBodegas):
@@ -176,93 +174,90 @@ def eliminar_arreglo(pCodigo, pArreglos, pBodegas):
     else:
         return False
 
-
 while True:
     opcionSeleccionada = leer_opcion()
-    try:
-        if opcionSeleccionada == 1:
-            tipoBuscado = input("Ingrese el tipo de arreglo a buscar: ")
-            unidades_tipo(tipoBuscado, arreglos, bodega)
+  
+    if opcionSeleccionada == 1:
+        tipoBuscado = input("Ingrese el tipo de arreglo a buscar: ")
+        unidades_tipo(tipoBuscado, arreglos, bodega)
 
 
-        elif opcionSeleccionada == 2:
+    elif opcionSeleccionada == 2:
+        while True:
+            try:
+                precioMinimo = int(input("Ingrese precio mínimo: "))
+                precioMaximo = int(input("Ingrese precio máximo: "))
+                if precioMinimo < 0 or precioMaximo < 0 or precioMinimo > precioMaximo:
+                    print("Debe ingresar valores enteros")
+                else:
+                    busqueda_precio(precioMinimo, precioMaximo, bodega, arreglos)
+                    break
+
+            except ValueError:
+                print("Debe ingresar valores enteros")
+
+
+
+    elif opcionSeleccionada == 3:
+        while True:
+            Codigo = input("Ingrese el código del arreglo a cambiar precio: ").strip().upper()
             while True:
                 try:
-                    precioMinimo = int(input("Ingrese precio mínimo: "))
-                    precioMaximo = int(input("Ingrese precio máximo: "))
-                    if precioMinimo < 0 or precioMaximo < 0 or precioMinimo > precioMaximo:
+                    nuevoPrecio = int(input("Ingrese nuevo precio: "))
+                    if nuevoPrecio <= 0:
                         print("Debe ingresar valores enteros")
                     else:
-                        busqueda_precio(precioMinimo, precioMaximo, bodega, arreglos)
                         break
-
                 except ValueError:
                     print("Debe ingresar valores enteros")
-
-
-
-        elif opcionSeleccionada == 3:
-            while True:
-                Codigo = input("Ingrese el código del arreglo a cambiar precio: ").strip().upper()
-                while True:
-                    try:
-                        nuevoPrecio = int(input("Ingrese nuevo precio: "))
-                        if nuevoPrecio <= 0:
-                            print("Debe ingresar valores enteros")
-                        else:
-                            break
-                    except ValueError:
-                        print("Debe ingresar valores enteros")
-                if actualizar_precio(Codigo, nuevoPrecio, bodega):
-                    print("Precio actualizado.")
-                else:
-                    print("El codigo no existe")
-                otroIntento = input("Desea actualizar otro precio (s/n)?: ").strip().lower()
-                if otroIntento != "s":
-                    break
-                
-        elif opcionSeleccionada == 4:
-            codigo = input("Ingrese código: ")
-            nombre = input("Ingrese nombre: ")
-            tipo = input("Ingrese tipo: ")
-            color = input("Ingrese color: ")
-            tamano = input("Ingrese tamaño: ")
-            tarjeta = input("¿Incluye tarjeta (s/n)?: ")
-            temporada = input("Ingrese temporada: ")
-            precio = input("Ingrese precio: ")
-            unidades = input("Ingrese unidades: ")
-
-            if not validar_codigo(codigo, arreglos, bodega):
-                print("Código inválido o ya existe")
-            elif not validar_nombre(nombre):
-                print("Nombre inválido")
-            elif not validar_tipo(tipo):
-                print("Tipo inválido")
-            elif not validar_color(color):
-                print("Color inválido")
-            elif not validar_tamano(tamano):
-                print("Tamaño inválido")
-            elif not validar_temporada(temporada):
-                print("Temporada inválida")
-            elif not validar_precio(precio):
-                print("Precio inválido")
-            elif not validar_unidades(unidades):
-                print("Unidades inválidas")
+            if actualizar_precio(Codigo, nuevoPrecio, bodega):
+                print("Precio actualizado.")
             else:
-                if agregar_arreglo(codigo, nombre, tipo, color, tamano, tarjeta, temporada, precio, unidades, arreglos, bodega):
-                    print("Arreglo agregado")
-                else:
-                    print("El código ya existe")  
+                print("El codigo no existe")
+            otroIntento = input("Desea actualizar otro precio (s/n)?: ").strip().lower()
+            if otroIntento != "s":
+                break
+            
+    elif opcionSeleccionada == 4:
+        codigo = input("Ingrese código: ")
+        nombre = input("Ingrese nombre: ")
+        tipo = input("Ingrese tipo: ")
+        color = input("Ingrese color: ")
+        tamano = input("Ingrese tamaño: ")
+        tarjeta = input("¿Incluye tarjeta (s/n)?: ")
+        temporada = input("Ingrese temporada: ")
+        precio = input("Ingrese precio: ")
+        unidades = input("Ingrese unidades: ")
 
-        elif opcionSeleccionada == 5:
-            Codigo = input("Ingrese el código del arreglo a eliminar: ")
-            if eliminar_arreglo(Codigo, arreglos, bodega):
-                print("Arreglo eliminado")
+        if not validar_codigo(codigo, arreglos, bodega):
+            print("Código inválido o ya existe")
+        elif not validar_nombre(nombre):
+            print("Nombre inválido")
+        elif not validar_tipo(tipo):
+            print("Tipo inválido")
+        elif not validar_color(color):
+            print("Color inválido")
+        elif not validar_tamano(tamano):
+            print("Tamaño inválido")
+        elif not validar_temporada(temporada):
+            print("Temporada inválida")
+        elif not validar_precio(precio):
+            print("Precio inválido")
+        elif not validar_unidades(unidades):
+            print("Unidades inválidas")
+        else:
+            if agregar_arreglo(codigo, nombre, tipo, color, tamano, tarjeta, temporada, precio, unidades, arreglos, bodega):
+                print("Arreglo agregado")
             else:
-                print("El código no existe")
+                print("El código ya existe")  
 
-        elif opcionSeleccionada == 6:
-            print("Programa finalizado")
-            break
-    except ValueError:
-        print("Debe seleccionar una opción válida (del 1 al 6)")
+    elif opcionSeleccionada == 5:
+        Codigo = input("Ingrese el código del arreglo a eliminar: ")
+        if eliminar_arreglo(Codigo, arreglos, bodega):
+            print("Arreglo eliminado")
+        else:
+            print("El código no existe")
+
+    elif opcionSeleccionada == 6:
+        print("Programa finalizado")
+        break
