@@ -197,7 +197,6 @@ while True:
                 print("Debe ingresar valores enteros")
 
 
-
     elif opcionSeleccionada == 3:
         while True:
             Codigo = input("Ingrese el código del arreglo a cambiar precio: ").strip().upper()
