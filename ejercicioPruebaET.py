@@ -78,9 +78,9 @@ def busqueda_precio(pmin, pmax, pBodegas, pArreglos):
         print("No hay arreglos en ese rango de precios.")
     else:
         resultados.sort()
-        #print(f"Los arreglos encontrados: {resultados}")
-        for elemento in resultados:
-            print(elemento)
+        print(f"Los arreglos encontrados: {resultados}")
+        # for elemento in resultados:
+        #     print(elemento)
 
 def validar_codigo(pCodigo, pArreglos, pBodegas):
     
@@ -93,58 +93,35 @@ def validar_codigo(pCodigo, pArreglos, pBodegas):
 
 def validar_nombre(pNombre):
     
-    pNombre = pNombre.strip()
-    if pNombre == "":
-        return False
-    return True
+    return pNombre.strip() != ""
     
 def validar_tipo(pTipo):
-    pTipo = pTipo.strip().lower()
-    if pTipo == "":
-        return False
-    return True
+
+    return pTipo.strip().lower() != ""
 
 def validar_color(pColor):
-    pColor = pColor.strip().lower()
-    if pColor == "":
-        return False
-    return True
-
+    return pColor.strip().lower() != ""
+    
 def validar_tamano(pTamano):
     pTamano = pTamano.strip().upper()
-    if pTamano == "":
-        return False
-    if pTamano in ("S", "M", "L"):
-        return True
-    return False
+    return pTamano in ['S', 'M', 'L']
     
 def validar_tarjeta(pTarjeta):
-    pTarjeta = pTarjeta.strip().lower()
-    if pTarjeta != "s":
-        return False
-    return True
+    return pTarjeta.strip().lower() in ["s", "n"]
 
 def validar_temporada(pTemporada):
-    pTemporada = pTemporada.strip().lower()
-    if pTemporada == "":
-        return False
-    return True
+    return pTemporada.strip().lower() != ""
+    
 
 def validar_precio(pPrecio):
     try:
-        precioNumerico = int(pPrecio)
-        if precioNumerico > 0:
-            return True
-        return False
+        return int(pPrecio) > 0
     except ValueError:
         return False
 
 def validar_unidades(pUnidades):
     try:
-        UnidadesNumerico = int(pUnidades)
-        if UnidadesNumerico >= 0:
-            return True
-        return False
+        return int(pUnidades) >= 0
     except ValueError:
         return False
     
@@ -153,15 +130,17 @@ def agregar_arreglo(pCodigo, pNombre, pTipo, pColor, pTamano, pTarjeta, pTempora
     if pCodigo in pArreglos:
         return False
     
+    incluye_tarjeta = True if pTarjeta.strip().lower() == "s" else False
+
     pArreglos[pCodigo] = [
         pNombre.strip(),
         pTipo.strip(),
         pColor.strip(),
         pTamano.strip().upper(),
-        pTarjeta,
+        incluye_tarjeta,
         pTemporada.strip()
     ]
-    pBodegas[pCodigo] = [pPrecio, pUnidades]
+    pBodegas[pCodigo] = [int(pPrecio), int(pUnidades)]
     return True
 
 def eliminar_arreglo(pCodigo, pArreglos, pBodegas):
@@ -175,6 +154,7 @@ def eliminar_arreglo(pCodigo, pArreglos, pBodegas):
         return False
 
 while True:
+    
     opcionSeleccionada = leer_opcion()
   
     if opcionSeleccionada == 1:
@@ -194,7 +174,7 @@ while True:
                     break
 
             except ValueError:
-                print("Debe ingresar valores enteros")git 
+                print("Debe ingresar valores enteros")
 
     elif opcionSeleccionada == 3:
         while True:
@@ -237,6 +217,8 @@ while True:
             print("Color inválido")
         elif not validar_tamano(tamano):
             print("Tamaño inválido")
+        elif not validar_tarjeta(tarjeta):
+            print("Tarjeta inválida")
         elif not validar_temporada(temporada):
             print("Temporada inválida")
         elif not validar_precio(precio):
@@ -257,5 +239,5 @@ while True:
             print("El código no existe")
 
     elif opcionSeleccionada == 6:
-        print("Programa finalizado")
+        print("Programa finalizado.")
         break
