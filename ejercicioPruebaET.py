@@ -194,8 +194,7 @@ while True:
                     break
 
             except ValueError:
-                print("Debe ingresar valores enteros")
-
+                print("Debe ingresar valores enteros")git 
 
     elif opcionSeleccionada == 3:
         while True:
